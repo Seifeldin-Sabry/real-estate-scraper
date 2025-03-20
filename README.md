@@ -12,6 +12,7 @@ A powerful web scraper that collects real estate data from popular listing websi
 
 ## Fun TODO's
 - Add UI
+- Add more real estate sources
 - Customise params easily
 - add user splits (rn its just for me :)))
 
