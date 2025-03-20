@@ -10,6 +10,11 @@ A powerful web scraper that collects real estate data from popular listing websi
 - **Periodic, updates** get the newest listings right on your phone through telegram
 - **Fast & efficient scraping** with error handling.
 
+## Fun TODO's
+- Add UI
+- Customise params easily
+- add user splits (rn its just for me :)))
+
 ## License 📜
 
 This project is licensed under the MIT License
