@@ -37,28 +37,6 @@ class FilterOptions:
         return {k: v for k, v in self.__dict__.items() if v is not None}
 
 
-def extract_attribute(driver, selector, attribute, wait_time=5, default=None):
-    """Helper method to extract attribute with proper error handling"""
-    try:
-        element = WebDriverWait(driver, wait_time).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, selector))
-        )
-        return element.get_attribute(attribute)
-    except (TimeoutException, NoSuchElementException):
-        return default
-
-
-def extract_text(driver, selector, wait_time=5, default=None):
-    """Helper method to extract text with proper error handling"""
-    try:
-        element = WebDriverWait(driver, wait_time).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, selector))
-        )
-        return element.text
-    except (TimeoutException, NoSuchElementException):
-        return default
-
-
 class ImmowebScraper:
     """
     Enhanced scraper for Immoweb properties with flexible filtering options.
@@ -68,7 +46,7 @@ class ImmowebScraper:
         self.headless = headless
         self.user_agent = user_agent
 
-    def setup_driver(self):
+    def __setup_driver__(self):
         """
         Set up and return a configured Chrome WebDriver instance.
         """
@@ -81,7 +59,30 @@ class ImmowebScraper:
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return driver
 
-    def construct_url(self, filter_options: FilterOptions) -> str:
+    @staticmethod
+    def __extract_attribute__(driver, selector, attribute, wait_time=5, default=None):
+        """Helper method to extract attribute with proper error handling"""
+        try:
+            element = WebDriverWait(driver, wait_time).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, selector))
+            )
+            return element.get_attribute(attribute)
+        except (TimeoutException, NoSuchElementException):
+            return default
+
+    @staticmethod
+    def __extract_text__(driver, selector, wait_time=5, default=None):
+        """Helper method to extract text with proper error handling"""
+        try:
+            element = WebDriverWait(driver, wait_time).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, selector))
+            )
+            return element.text
+        except (TimeoutException, NoSuchElementException):
+            return default
+
+    @staticmethod
+    def construct_url(filter_options: FilterOptions) -> str:
         """
         Constructs a URL for Immoweb based on the provided FilterOptions.
         """
@@ -154,7 +155,7 @@ class ImmowebScraper:
         url = self.construct_url(filter_options)
         print(f"Searching with URL: {url}")
 
-        driver = self.setup_driver()
+        driver = self.__setup_driver__()
         try:
             driver.get(url)
             sleep(3)  # Allow page to load
@@ -191,7 +192,7 @@ class ImmowebScraper:
         Fetches and extracts property details from a given property link using Selenium.
         Returns a Property object with all available details.
         """
-        driver = self.setup_driver()
+        driver = self.__setup_driver__()
         try:
             driver.get(property_link)
             wait = WebDriverWait(driver, 10)
