@@ -198,15 +198,15 @@ class ImmowebScraper:
             wait = WebDriverWait(driver, 10)
 
             # Extract basic info
-            price = extract_text(driver, ".classified__price span")
-            address = extract_text(driver, "iw-classified-address")
+            price = self.__extract_text__(driver, ".classified__price span")
+            address = self.__extract_text__(driver, "iw-classified-address")
 
             # Try alternative address selector if the first one fails
             if not address:
-                address = extract_text(driver, ".classified__information--address")
+                address = self.__extract_text__(driver, ".classified__information--address")
 
             # Extract transaction type from title
-            title = extract_text(driver, ".classified__title")
+            title = self.__extract_text__(driver, ".classified__title")
             transaction_type = None
             if title:
                 title_lower = title.lower()
